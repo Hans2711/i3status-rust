@@ -1,0 +1,123 @@
+###############################################################################
+# i3status-rust CONFIG (ﾉ◕ヮ◕)ﾉ*:･ﾟ✧
+###############################################################################
+
+# This sets how icons are formatted in your bar
+icons_format = "{icon}"
+
+###############################################################################
+# THEME SETTINGS :3
+###############################################################################
+[theme]
+# Use a theme file located in your home directory
+theme = "solarized-dark"
+
+###############################################################################
+# CUSTOM BLOCK: Spotify Playback ♪
+###############################################################################
+[[block]]
+block = "custom"
+command = "spt playback --format"
+interval = 3
+
+# Left-click toggles playback
+[[block.click]]
+button = "left"
+cmd = "spt playback --toggle"
+
+###############################################################################
+# CUSTOM BLOCK: Battery Status
+###############################################################################
+[[block]]
+block = "custom"
+interval = 30
+command = "~/.config/i3status-rust/scripts/battery.sh"  # Your script to display battery info
+
+###############################################################################
+# CUSTOM BLOCK: Docker Status
+###############################################################################
+[[block]]
+block = "custom"
+interval = 20
+command = "~/.config/i3status-rust/scripts/docker.sh"  # Your script to display Docker info
+
+###############################################################################
+# CUSTOM BLOCK: IP / Gnome Control Center
+###############################################################################
+[[block]]
+block = "custom"
+interval = 30
+command = "wget -qO - checkip.amazonaws.com"
+[[block.click]]
+button = "left"
+cmd = "gnome-control-center"
+
+###############################################################################
+# CUSTOM BLOCK: Ping
+###############################################################################
+[[block]]
+block = "custom"
+json = true
+interval = 60
+command = ''' echo "{\"icon\":\"ping\",\"text\":\"`ping -c4 1.1.1.1 | tail -n1 | cut -d'/' -f5`\"}" '''
+# Left-click can run a custom command
+[[block.click]]
+button = "left"
+cmd = "gnome-control-center"  # Replace <command> with something helpful
+
+###############################################################################
+# CUSTOM BLOCK: Memory Usage
+###############################################################################
+[[block]]
+block = "custom"
+command = "free -m | awk 'NR==2{printf \"MEM %.2f%%\", $3*100/$2 }'"
+interval = 10
+
+###############################################################################
+# DISK SPACE BLOCK: Root Partition
+###############################################################################
+[[block]]
+block = "disk_space"
+path = "/"
+info_type = "available"
+alert_unit = "GB"
+interval = 30
+warning = 10.0
+alert = 5.0
+format = "DISK: $available "
+
+###############################################################################
+# CPU BLOCK
+###############################################################################
+[[block]]
+block = "cpu"
+info_cpu = 20        # Show CPU usage at 20% increments
+warning_cpu = 50     # Warn color above 50%
+critical_cpu = 90    # Critical color above 90%
+
+###############################################################################
+# SOUND BLOCK (^_^)
+###############################################################################
+[[block]]
+block = "sound"
+# Left-click to open pavucontrol in Flatpak
+[[block.click]]
+button = "left"
+cmd = "flatpak run --env=LIBGL_ALWAYS_SOFTWARE=1 org.pulseaudio.pavucontrol"
+
+###############################################################################
+# CUSTOM BLOCK: Monitor Info (number of monitors, etc.)
+###############################################################################
+[[block]]
+block = "custom"
+command = "xrandr --listmonitors | tail -n+2 | tr '+' ' ' | cut -d' ' -f 4 | tr '\n' ' '"
+interval = "once"
+signal = 4
+
+###############################################################################
+# TIME BLOCK
+###############################################################################
+[[block]]
+block = "time"
+interval = 10
+format = " $timestamp.datetime(f:'%H:%M %d.%m.%Y') "
