@@ -85,7 +85,7 @@ critical_cpu = 90    # Critical color above 90%
 [[block]]
 block = "net"
 device = "wlo1"        # change this to your actual network interface (e.g., "eth0", "wlan0", "enp0s31f6")
-format = " 📶 $ssid ($signal_strength%)"
+format = " $ssid ($signal_strength%)"
 interval = 20
 
 ###############################################################################
